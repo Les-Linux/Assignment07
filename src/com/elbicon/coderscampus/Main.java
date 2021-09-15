@@ -36,6 +36,12 @@ public class Main {
             System.out.println("Updated Total Size=" + custUserList.getSize());
             System.out.println("Update Succeeded? - " + custUserList.remove(5));
             System.out.println("Updated Total Size=" + custUserList.getSize());
+
+/*            for (int i=0; i < 10; i++) {
+                randomUserList = userList.createUserList(2);
+                System.out.println("Update Succeeded? - " + custUserList.add(randomUserList) + "\n");
+            }*/
+
         } catch (Exception var1) {
             System.out.println("Exception Caught:" + var1.getMessage());
         }

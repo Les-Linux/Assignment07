@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class CustomArrayList<T> implements CustomList<T> {
-    Object[] items = new Object[10];
+    static Object[] items = new Object[10];
     Elements indices = new Elements();
     Integer arrayTotalSize;
     Integer size = 0;
@@ -27,8 +27,7 @@ public class CustomArrayList<T> implements CustomList<T> {
         }
 
         this.items[this.size] = item;
-        Integer var2 = this.size;
-        this.size = this.size + 1;
+        size++;
         return true;
     }
 
@@ -42,26 +41,22 @@ public class CustomArrayList<T> implements CustomList<T> {
         Integer totalElements;
         if (this.items[index] == null) {
             this.items[index] = item;
-            totalElements = this.size;
-            this.size = this.size + 1;
+            //totalElements = this.size;
+            size++;
         } else {
             newObject = new Object[this.items.length + 1];
             totalElements = this.getIndexElementsSize();
 
             for(int i = 0; i < totalElements + 1; ++i) {
-                Integer var6;
                 if (i < index - 1 && this.items[i] != null) {
                     newObject[i] = this.items[i];
-                    var6 = this.size;
-                    this.size = this.size + 1;
+                    size++;
                 } else if (i == index - 1 && this.items[i] != null) {
                     newObject[i] = item;
-                    var6 = this.size;
-                    this.size = this.size + 1;
+                    size++;
                 } else {
                     newObject[i] = this.items[i - 1];
-                    var6 = this.size;
-                    this.size = this.size + 1;
+                    size++;
                 }
             }
         }
@@ -91,6 +86,7 @@ public class CustomArrayList<T> implements CustomList<T> {
         this.size = 0;
         Integer totalElements = this.getIndexElementsSize();
         Object[] newObject = new Object[this.items.length - 1];
+        Boolean bl = new Boolean(false);
 
         for(int i = 0; i < totalElements - 1; ++i) {
             if (i < index - 1) {
@@ -105,7 +101,13 @@ public class CustomArrayList<T> implements CustomList<T> {
             }
         }
 
-        return null;
+        if (totalElements == 0) {
+            return (T) bl;
+        } else{
+            return (T) bl.TRUE;
+        }
+
+        //return (T) bl;
     }
 
     private void updateCountStats() {
