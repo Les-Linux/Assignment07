@@ -1,116 +1,137 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package com.elbicon.coderscampus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Collections;
 
 public class CustomArrayList<T> implements CustomList<T> {
     Object[] items = new Object[10];
     Elements indices = new Elements();
     Integer arrayTotalSize;
+    Integer size = 0;
     Long currentUserCount;
     Integer newUserCount;
     Long lastElement;
 
+    public CustomArrayList() {
+    }
 
-    @Override
     public boolean add(T item) {
-        try {
-            updateNewUserCount(item);
-            updateCountStats();
-            updateArraySize(items.length);
+        if (this.size == this.items.length) {
+            this.items = Arrays.copyOf(this.items, this.items.length * 2);
+        }
 
-            for (int i = 0; i <= newUserCount - 1; i++) { //insert from index 0
-                if (lastElement == 0 && i <= arrayTotalSize - 1) {
-                    this.items[i] = ((ArrayList<?>) item).get(i);
-                    //this.items[i] = ((ArrayList<Users>) item).get(i);
-                } else if (lastElement != 0 && i <= arrayTotalSize - 1 && indexFree()) {
-                    this.items[lastElement.intValue()] = ((ArrayList<?>) item).get(i);
-                    //this.items[lastElement.intValue()] = ((ArrayList<Users>) item).get(i);
-                    lastElement++;
+        this.items[this.size] = item;
+        Integer var2 = this.size;
+        this.size = this.size + 1;
+        return true;
+    }
+
+    public boolean add(int index, T item) throws IndexOutOfBoundsException {
+        this.size = 0;
+        Object[] newObject = null;
+        if (this.size == this.items.length) {
+            this.items = Arrays.copyOf(this.items, this.items.length * 2);
+        }
+
+        Integer totalElements;
+        if (this.items[index] == null) {
+            this.items[index] = item;
+            totalElements = this.size;
+            this.size = this.size + 1;
+        } else {
+            newObject = new Object[this.items.length + 1];
+            totalElements = this.getIndexElementsSize();
+
+            for(int i = 0; i < totalElements + 1; ++i) {
+                Integer var6;
+                if (i < index - 1 && this.items[i] != null) {
+                    newObject[i] = this.items[i];
+                    var6 = this.size;
+                    this.size = this.size + 1;
+                } else if (i == index - 1 && this.items[i] != null) {
+                    newObject[i] = item;
+                    var6 = this.size;
+                    this.size = this.size + 1;
                 } else {
-                    updateArraySize(this.items.length * 2);
-                    updateCountStats();
-                    this.items = Arrays.copyOf(this.items, arrayTotalSize);
-
-                    updateCountStats();
-                    this.items[lastElement.intValue()] = ((ArrayList<?>) item).get(i);
-
-                    updateCountStats();
-
+                    newObject[i] = this.items[i - 1];
+                    var6 = this.size;
+                    this.size = this.size + 1;
                 }
             }
-            updateCountStats();
-            updateNewUserCount(item);
-
-            //For Informational Purpose Only
-            System.out.println("ArrayTotalSize=" + arrayTotalSize);
-            System.out.println("UserCount=" + currentUserCount);
-            System.out.println("NewUserAdded=" + newUserCount);
-
-            return true;
-        } catch (Exception e) {
-            System.out.println("Exception Caught - " + e.getMessage());
         }
-        return false;
+
+        this.items = Arrays.copyOf(newObject, newObject.length);
+        return true;
     }
 
-    @Override
     public int getSize() {
-        // return this.items.length;
-        // Arrays.stream(this.items).mapToInt(x -> x.intValue());
-        return indices.getCurrentUserCount().intValue();
-
-        //return 0;
+        return this.size;
     }
 
-    @Override
     public T get(int index) {
         try {
-            if (index <= this.items.length - 1) {
-                List userIndex = IntStream.range(0, items.length)
-                        .mapToObj(m -> this.items[index])
-                        .distinct()
-                        .filter(f -> f != null)
-                        .collect(Collectors.toList());
-                return (T) userIndex;
+            if (index >= this.size) {
+                throw new ArrayIndexOutOfBoundsException();
             } else {
-                List<String> indexOutOfBounds = new ArrayList<>();
-                indexOutOfBounds.add("*** User Index out of Bounds ***");
-                return (T) indexOutOfBounds;
+                return (T) this.items[index];
             }
         } catch (Exception e) {
             System.out.println("Exception Caught " + e.getMessage());
+            return null;
         }
+    }
+
+    public T remove(int index) throws IndexOutOfBoundsException {
+        this.size = 0;
+        Integer totalElements = this.getIndexElementsSize();
+        Object[] newObject = new Object[this.items.length - 1];
+
+        for(int i = 0; i < totalElements - 1; ++i) {
+            if (i < index - 1) {
+                newObject[i] = this.items[i];
+                size++;
+            } else if (i == index - 1) {
+                newObject[i] = this.items[i + 1];
+                size++;
+            } else {
+                newObject[i] = this.items[i + 1];
+                size++;
+            }
+        }
+
         return null;
     }
 
     private void updateCountStats() {
-        indices.setCurrentUserCount(items);
-        currentUserCount = indices.getCurrentUserCount();
-
-        indices.setLastElement(items);
-        lastElement = indices.getLastElement();
+        this.indices.setCurrentUserCount(this.items);
+        this.currentUserCount = this.indices.getCurrentUserCount();
+        this.indices.setLastElement(this.items);
+        this.lastElement = this.indices.getLastElement();
     }
 
     private void updateNewUserCount(T item) {
-        indices.setNewUserCount((ArrayList<Users>) item);
-        newUserCount = indices.getNewUserCount();
-
+        this.indices.setNewUserCount((ArrayList)item);
+        this.newUserCount = this.indices.getNewUserCount();
     }
 
     private void updateArraySize(int elementCount) {
-        //indices.setTotalLength(this.items.length);
-        indices.setTotalLength(elementCount);
-        arrayTotalSize = indices.getTotalLength();
+        this.indices.setTotalLength(elementCount);
+        this.arrayTotalSize = this.indices.getTotalLength();
     }
 
     private boolean indexFree() {
-        if (!(arrayTotalSize > lastElement)) {
-            return false;
-        }
-        return true;
+        return (long)this.arrayTotalSize > this.lastElement;
+    }
+
+    private Integer getIndexElementsSize() {
+        ArrayList itemsCount = new ArrayList(Arrays.asList(this.items));
+        itemsCount.removeAll(Collections.singleton((Object)null));
+        return itemsCount.size();
     }
 }
