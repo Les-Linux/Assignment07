@@ -62,6 +62,83 @@ class CustomArrayListTest <T>{
         }
     }
 
+
+    @Test
+    void should_add_users_to_array_index() {
+        //ARRANGE
+        List<Boolean> sut = new ArrayList<>();
+        Integer successCount = 0;
+        Integer size = 0;
+        Integer additionalUserCount=1;
+        int insertAtIndex= 1;
+        Boolean updateSuccessful = false;
+
+        //ACT
+        for (int i=0;i<usersToBeCreated;i++){
+            randomUser = getRandomUser(i);
+            sut.add(users.add(randomUser));
+        }
+        size = sut.size();
+        randomUser = getRandomUser(additionalUserCount);
+        sut.add(users.add(insertAtIndex,randomUser));
+
+        //ASSERT
+        if (sut.size() == (insertAtIndex + usersToBeCreated)){
+            Boolean updateSuccess = sut.get(1);
+            if (updateSuccess == Boolean.TRUE){
+                System.out.println("** SUT Test Succeeded ** ");
+            }else{
+                System.out.println("** SUT Test Failed ** ");
+            }
+        } else{
+            System.out.println("** SUT Test Failed ** ");
+        }
+    }
+
+
+    @Test
+    void should_get_array_size() {
+        //ARRANGE
+        List<Boolean> sut = new ArrayList<>();
+
+        //ACT
+        for (int i=0;i<usersToBeCreated;i++){
+            randomUser = getRandomUser(i);
+            sut.add(users.add(randomUser));
+        }
+
+        //ASSERT
+        if(sut.size() == users.getSize()){
+            System.out.println("** SUT Test Succeeded ** ");
+        } else{
+            System.out.println("** SUT Test Failed ** ");
+        }
+
+    }
+
+    @Test
+    void should_get_from_array_index() {
+        //ARRANGE
+        List<Boolean> sut = new ArrayList<>();
+        Integer elementIndex = 1;
+
+        //ACT
+        for (int i=0;i<usersToBeCreated;i++){
+            randomUser = getRandomUser(i);
+            sut.add(users.add(randomUser));
+        }
+
+        List<List<Users>> userAtIndex = users.get(elementIndex);
+
+        if (!(userAtIndex == null)){
+            System.out.println("** SUT Test Succeeded ** ");
+        } else{
+            System.out.println("** SUT Test Failed ** ");
+        }
+
+    }
+
+
     List<List<Users>> getRandomUser(Integer userCount){
         CustomList<List<List<Users>>> randomUser = new CustomArrayList<>();
 
@@ -69,7 +146,7 @@ class CustomArrayListTest <T>{
         PopulateUserList userList = new PopulateUserList();
 
         try{
-                randomUserList = userList.createUserList(userCount);
+            randomUserList = userList.createUserList(userCount);
         } catch (Exception e){
             System.out.println("Exception Caught: " + e.getMessage());
         }
