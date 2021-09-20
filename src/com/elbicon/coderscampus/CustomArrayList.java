@@ -8,9 +8,10 @@ package com.elbicon.coderscampus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class CustomArrayList<T> implements CustomList<T> {
-    static Object[] items = new Object[10];
+    Object[] items = new Object[10];
     Elements indices = new Elements();
     Integer arrayTotalSize;
     Integer size = 0;
@@ -22,13 +23,21 @@ public class CustomArrayList<T> implements CustomList<T> {
     }
 
     public boolean add(T item) {
-        if (this.size == this.items.length) {
-            this.items = Arrays.copyOf(this.items, this.items.length * 2);
+        try{
+            for(int i=0;i<((ArrayList) item).size();i++) {
+                if (this.size == this.items.length) {
+                    this.items = Arrays.copyOf(this.items, this.items.length * 2);
+                }
+                //this.items[this.size] = item;
+                this.items[this.size] = ((ArrayList)item).get(i);
+                size++;
+            }
+            return true;
+        }catch(Exception e){
+            System.out.println("Exception Caught: " + e.getMessage());
+            return false;
         }
 
-        this.items[this.size] = item;
-        size++;
-        return true;
     }
 
     public boolean add(int index, T item) throws IndexOutOfBoundsException {
@@ -48,11 +57,11 @@ public class CustomArrayList<T> implements CustomList<T> {
             totalElements = this.getIndexElementsSize();
 
             for(int i = 0; i < totalElements + 1; ++i) {
-                if (i < index - 1 && this.items[i] != null) {
+                if (i < index && this.items[i] != null) {
                     newObject[i] = this.items[i];
                     size++;
-                } else if (i == index - 1 && this.items[i] != null) {
-                    newObject[i] = item;
+                } else if (i == index && this.items[i] != null) {
+                    newObject[i] = ((ArrayList)item).get(((ArrayList<?>) item).size() - 1);
                     size++;
                 } else {
                     newObject[i] = this.items[i - 1];
@@ -88,26 +97,27 @@ public class CustomArrayList<T> implements CustomList<T> {
         Object[] newObject = new Object[this.items.length - 1];
         Boolean bl = new Boolean(false);
 
-        for(int i = 0; i < totalElements - 1; ++i) {
-            if (i < index - 1) {
+        for (int i = 0; i < totalElements - 1; ++i) {
+            if (i < index) {
                 newObject[i] = this.items[i];
                 size++;
-            } else if (i == index - 1) {
-                newObject[i] = this.items[i + 1];
+            } else if (i == index) {
+                newObject[i] = this.items[i+1];
                 size++;
             } else {
-                newObject[i] = this.items[i + 1];
+                newObject[i] = this.items[i+1];
                 size++;
             }
         }
 
-        if (totalElements == 0) {
-            return (T) bl;
-        } else{
-            return (T) bl.TRUE;
-        }
+            if (totalElements == 0) {
+                return (T) bl;
+            } else {
+                this.items = Arrays.copyOf(newObject, newObject.length);
+                return (T) bl.TRUE;
+            }
 
-        //return (T) bl;
+            //return (T) bl;
     }
 
     private void updateCountStats() {
@@ -135,5 +145,10 @@ public class CustomArrayList<T> implements CustomList<T> {
         ArrayList itemsCount = new ArrayList(Arrays.asList(this.items));
         itemsCount.removeAll(Collections.singleton((Object)null));
         return itemsCount.size();
+    }
+    @Override
+    public String toString(){
+        return "Array Size= " + getIndexElementsSize().toString();
+
     }
 }

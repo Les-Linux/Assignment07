@@ -11,8 +11,8 @@ class CustomArrayListTest <T>{
     final Integer usersToBeCreated = 10;
     final Integer userIndexToBeRemoved = 1;
     Boolean updateSuccessful = false;
-    List<List<Users>> randomUser;
-    CustomList<List<List<Users>>> users = new CustomArrayList<>();
+    List<Users> randomUser;
+    CustomList<List<Users>> users = new CustomArrayList<>();
 
     @Test
     void should_add_item_to_array() {
@@ -102,8 +102,8 @@ class CustomArrayListTest <T>{
         List<Boolean> sut = new ArrayList<>();
 
         //ACT
-        for (int i=0;i<usersToBeCreated;i++){
-            randomUser = getRandomUser(i);
+        for (int i=1;i<=usersToBeCreated;i++){
+            randomUser = getRandomUser(1);
             sut.add(users.add(randomUser));
         }
 
@@ -124,11 +124,11 @@ class CustomArrayListTest <T>{
 
         //ACT
         for (int i=0;i<usersToBeCreated;i++){
-            randomUser = getRandomUser(i);
+            randomUser = getRandomUser(1);
             sut.add(users.add(randomUser));
         }
 
-        List<List<Users>> userAtIndex = users.get(elementIndex);
+        Users userAtIndex = (Users) users.get(elementIndex);
 
         if (!(userAtIndex == null)){
             System.out.println("** SUT Test Succeeded ** ");
@@ -139,10 +139,10 @@ class CustomArrayListTest <T>{
     }
 
 
-    List<List<Users>> getRandomUser(Integer userCount){
-        CustomList<List<List<Users>>> randomUser = new CustomArrayList<>();
+    List<Users> getRandomUser(Integer userCount){
+        CustomList<List<Users>> randomUser = new CustomArrayList<>();
 
-        List<List<Users>> randomUserList = new ArrayList<>();
+        List<Users> randomUserList = new ArrayList<>();
         PopulateUserList userList = new PopulateUserList();
 
         try{

@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Random;
 
 public class PopulateUserList {
-    public List<List<Users>> createUserList(int userCount) {
-        List<List<Users>> siteUsers = new ArrayList<List<Users>>();
+    public List<Users> createUserList(int userCount) {
+        List<Users> siteUsers = new ArrayList<>();
         Random random = new Random();
         String alphaNumerics = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        List userCol = new ArrayList();
 
         try {
             StringBuilder firstName = new StringBuilder();
@@ -22,13 +23,14 @@ public class PopulateUserList {
                 }
                 user.setFirstName(firstName.toString());
                 user.setLastName(lastName.toString());
-                List userCol = new ArrayList();
+                //List userCol = new ArrayList();
                 userCol.add(user);
-                siteUsers.add(userCol);
+                //siteUsers.add(userCol);
                 firstName.setLength(0);
                 lastName.setLength(0);
             }
-            return siteUsers;
+            //return siteUsers;
+            return userCol;
         } catch (Exception e) {
             System.out.println("Exception Caught: " + e.getMessage());
         }
